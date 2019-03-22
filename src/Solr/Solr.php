@@ -85,8 +85,14 @@ class Solr
         /** @var Module $module */
         $module = ModuleLoader::getModule('silverstripe/fulltextsearch');
         $modulePath = $module->getPath();
-
-        if (version_compare($version, '4', '>=')) {
+        
+	    if (version_compare($version, '5', '>=')) {
+		    $versionDefaults = array(
+			    'service' => 'Solr5Service',
+			    'extraspath' => Director::baseFolder().'/fulltextsearch/conf/solr/5/extras/',
+			    'templatespath' => Director::baseFolder().'/fulltextsearch/conf/solr/5/templates/',
+		    );
+	    } elseif (version_compare($version, '4', '>=')) {
             $versionDefaults = [
                 'service'       => Solr4Service::class,
                 'extraspath'    => $modulePath . '/conf/solr/4/extras/',
@@ -124,7 +130,7 @@ class Solr
     public static function service($core = null)
     {
         $options = self::solr_options();
-
+        
         if (!self::$service_singleton) {
             self::$service_singleton = Injector::inst()->create(
                 $options['service'],

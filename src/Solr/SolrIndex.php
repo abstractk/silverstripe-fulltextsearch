@@ -1081,7 +1081,7 @@ abstract class SolrIndex extends SearchIndex
             'schema.xml',
             (string)$this->generateSchema()
         );
-
+        
         // Upload additional files
         foreach (glob($this->getExtrasPath() . '/*') as $file) {
             if (is_file($file)) {
